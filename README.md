@@ -142,4 +142,4 @@ The relevant fields used from `bezetting-parkeergarages-real-time`:
 - The Google Maps iframe uses the public embed URL without an API key. For a production deployment you would swap this for an embed with a key (or another map provider).
 - The Ghent dataset only exposes 13 parkings at the time of writing, so pagination is not implemented.
 - Antd 5 currently logs a React 19 compatibility warning in `test` and dev environments. Functionality is unaffected; this is tracked upstream by Ant Design.
-- `react-query@3` is unmaintained but explicitly required by the assignment. `--legacy-peer-deps` is needed at install time.
+- `react-query@3` is unmaintained but explicitly required by the assignment. pnpm resolves the peer-dep conflict natively; `--legacy-peer-deps` is not required with pnpm.
