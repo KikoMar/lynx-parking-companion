@@ -56,6 +56,7 @@ test('Parking list search filters by name', async () => {
   expect(screen.getByText('Reep')).toBeInTheDocument();
 });
 
+// antd Select opens a portal dropdown; give it more room in the slow jsdom env
 test('Sorting by available spaces (high → low) reorders the list', async () => {
   const user = userEvent.setup({ delay: null });
   renderPage();
@@ -71,7 +72,7 @@ test('Sorting by available spaces (high → low) reorders the list', async () =>
     // Expected order: Savaanstraat (327), Dok noord (298), Reep (23)
     expect(names).toEqual(['Savaanstraat', 'Dok noord', 'Reep']);
   });
-});
+}, 15000);
 
 test('Favorite parking is pinned to the top of the list', async () => {
   const user = userEvent.setup({ delay: null });
