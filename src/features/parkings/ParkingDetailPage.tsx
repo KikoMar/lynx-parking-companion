@@ -1,31 +1,11 @@
 import React from 'react';
-import { Button, Card, Space, Tag, Typography } from 'antd';
+import { Button, Card, Empty, Skeleton, Space, Tag, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import styles from './ParkingDetailPage.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useParkingsQuery } from './parkingApi';
-import LoadingState from '../../components/LoadingState/LoadingState';
 import ErrorState from '../../components/ErrorState/ErrorState';
-import EmptyState from '../../components/EmptyState/EmptyState';
-import { ParkingStructure } from './parkingTypes';
 import { AppRoute } from '../../constants';
-
-interface DetailItemProps {
-  label: string;
-  value: React.ReactNode;
-}
-
-const DetailItem: React.FC<DetailItemProps> = ({ label, value }) => (
-  <div>
-    <div className={styles.parkingDetailItemLabel}>{label}</div>
-    <div className={styles.parkingDetailItemValue}>{value || '—'}</div>
-  </div>
-);
-
-const buildMapsUrl = (p: ParkingStructure): string | null => {
-  if (p.latitude == null || p.longitude == null) return null;
-  return `https://www.google.com/maps?q=${p.latitude},${p.longitude}&z=16&output=embed`;
-};
 
 const ParkingDetailPage: React.FC = () => {
   const { parkingId } = useParams<{ parkingId: string }>();
@@ -33,7 +13,7 @@ const ParkingDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { data, isLoading, isError, refetch } = useParkingsQuery();
 
-  if (isLoading) return <LoadingState rows={6} />;
+  if (isLoading) return <Skeleton active paragraph={{ rows: 6 }} />;
   if (isError) {
     return (
       <ErrorState
@@ -54,12 +34,17 @@ const ParkingDetailPage: React.FC = () => {
         >
           Back to parkings
         </Button>
-        <EmptyState description="Parking not found" />
+        <Empty description="Parking not found" />
       </>
     );
   }
 
-  const mapsUrl = buildMapsUrl(parking);
+  const mapsUrl =
+    parking.latitude != null && parking.longitude != null
+      ? `https://www.google.com/maps?q=${parking.latitude},${parking.longitude}&z=16&output=embed`
+      : null;
+
+  // TODO: show lastUpdate somewhere on this page
 
   return (
     <div data-testid="parking-detail">
@@ -96,37 +81,51 @@ const ParkingDetailPage: React.FC = () => {
         </div>
 
         <div className={styles.parkingDetailGrid}>
-          <DetailItem
-            label="Available spaces"
-            value={
+          <div>
+            <div className={styles.parkingDetailItemLabel}>Available spaces</div>
+            <div className={styles.parkingDetailItemValue}>
               <strong style={{ fontSize: 20, color: '#1677ff' }}>
                 {parking.availableSpaces} / {parking.totalCapacity}
               </strong>
-            }
-          />
-          <DetailItem label="Address" value={parking.address} />
-          <DetailItem label="Opening hours" value={parking.openingHours} />
-          <DetailItem label="Operator" value={parking.operator} />
-          <DetailItem label="Category" value={parking.category} />
-          <DetailItem label="Parking type" value={parking.type} />
-          <DetailItem
-            label="Website"
-            value={
-              parking.website ? (
-                <a
-                  href={parking.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+            </div>
+          </div>
+          <div>
+            <div className={styles.parkingDetailItemLabel}>Address</div>
+            <div className={styles.parkingDetailItemValue}>{parking.address || '—'}</div>
+          </div>
+          <div>
+            <div className={styles.parkingDetailItemLabel}>Opening hours</div>
+            <div className={styles.parkingDetailItemValue}>{parking.openingHours || '—'}</div>
+          </div>
+          <div>
+            <div className={styles.parkingDetailItemLabel}>Operator</div>
+            <div className={styles.parkingDetailItemValue}>{parking.operator || '—'}</div>
+          </div>
+          <div>
+            <div className={styles.parkingDetailItemLabel}>Category</div>
+            <div className={styles.parkingDetailItemValue}>{parking.category || '—'}</div>
+          </div>
+          <div>
+            <div className={styles.parkingDetailItemLabel}>Parking type</div>
+            <div className={styles.parkingDetailItemValue}>{parking.type || '—'}</div>
+          </div>
+          <div>
+            <div className={styles.parkingDetailItemLabel}>Website</div>
+            <div className={styles.parkingDetailItemValue}>
+              {parking.website ? (
+                <a href={parking.website} target="_blank" rel="noopener noreferrer">
                   Visit website
                 </a>
               ) : (
                 '—'
-              )
-            }
-          />
+              )}
+            </div>
+          </div>
           {parking.extraInfo && (
-            <DetailItem label="Notice" value={parking.extraInfo} />
+            <div>
+              <div className={styles.parkingDetailItemLabel}>Notice</div>
+              <div className={styles.parkingDetailItemValue}>{parking.extraInfo}</div>
+            </div>
           )}
         </div>
 
@@ -145,3 +144,4 @@ const ParkingDetailPage: React.FC = () => {
 };
 
 export default ParkingDetailPage;
+

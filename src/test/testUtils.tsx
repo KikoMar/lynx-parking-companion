@@ -4,11 +4,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ParkingStructure } from '../features/parkings/parkingTypes';
 
-interface ProvidersProps {
-  children: React.ReactNode;
-  initialEntries?: string[];
-}
-
 export const createTestQueryClient = (): QueryClient =>
   new QueryClient({
     defaultOptions: {
@@ -21,31 +16,20 @@ export const createTestQueryClient = (): QueryClient =>
     },
   });
 
-export const AllProviders: React.FC<ProvidersProps> = ({
-  children,
-  initialEntries = ['/'],
-}) => {
-  const client = createTestQueryClient();
-  return (
-    <QueryClientProvider client={client}>
-      <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
-    </QueryClientProvider>
-  );
-};
-
 export const renderWithProviders = (
   ui: React.ReactElement,
-  { initialEntries, ...options }: { initialEntries?: string[] } & Omit<
-    RenderOptions,
-    'wrapper'
-  > = {}
-) =>
-  render(ui, {
+  { initialEntries = ['/'], ...options }: { initialEntries?: string[] } & Omit<RenderOptions, 'wrapper'> = {}
+) => {
+  const client = createTestQueryClient();
+  return render(ui, {
     wrapper: ({ children }) => (
-      <AllProviders initialEntries={initialEntries}>{children}</AllProviders>
+      <QueryClientProvider client={client}>
+        <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
+      </QueryClientProvider>
     ),
     ...options,
   });
+};
 
 export const mockParkings: ParkingStructure[] = [
   {

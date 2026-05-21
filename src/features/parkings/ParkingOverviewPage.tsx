@@ -1,15 +1,19 @@
 import React, { useMemo, useState } from 'react';
-import { Space, Typography } from 'antd';
+import { Empty, Input, Select, Skeleton, Space, Typography } from 'antd';
 import { useParkingsQuery } from './parkingApi';
 import styles from './ParkingOverviewPage.module.scss';
 import { useParkingStore } from './parkingStore';
 import { ParkingSortOption } from './parkingTypes';
-import { preparedParkingList } from './parkingUtils';
+import { filterParkingsByName, sortParkings, pinFavoriteFirst } from './parkingUtils';
 import ParkingCard from './ParkingCard';
-import ParkingFilters from './ParkingFilters';
-import LoadingState from '../../components/LoadingState/LoadingState';
 import ErrorState from '../../components/ErrorState/ErrorState';
-import EmptyState from '../../components/EmptyState/EmptyState';
+
+const sortOptions: { value: ParkingSortOption; label: string }[] = [
+  { value: 'name-asc', label: 'Name (A → Z)' },
+  { value: 'name-desc', label: 'Name (Z → A)' },
+  { value: 'spaces-desc', label: 'Available spaces (high → low)' },
+  { value: 'spaces-asc', label: 'Available spaces (low → high)' },
+];
 
 const ParkingOverviewPage: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -19,10 +23,11 @@ const ParkingOverviewPage: React.FC = () => {
   const favoriteId = useParkingStore((s) => s.favoriteParkingId);
   const toggleFavorite = useParkingStore((s) => s.toggleFavorite);
 
-  const parkings = useMemo(
-    () => preparedParkingList(data ?? [], search, sort, favoriteId),
-    [data, search, sort, favoriteId]
-  );
+  const parkings = useMemo(() => {
+    const filtered = filterParkingsByName(data ?? [], search);
+    const sorted = sortParkings(filtered, sort);
+    return pinFavoriteFirst(sorted, favoriteId);
+  }, [data, search, sort, favoriteId]);
 
   return (
     <div data-testid="parking-overview">
@@ -31,14 +36,23 @@ const ParkingOverviewPage: React.FC = () => {
           Ghent parkings
         </Typography.Title>
       </div>
-      <ParkingFilters
-        search={search}
-        onSearchChange={setSearch}
-        sort={sort}
-        onSortChange={setSort}
-      />
+      <div className={styles.filters}>
+        <Input.Search
+          allowClear
+          placeholder="Search by parking name"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          aria-label="Search parkings"
+        />
+        <Select<ParkingSortOption>
+          value={sort}
+          onChange={setSort}
+          options={sortOptions}
+          aria-label="Sort parkings"
+        />
+      </div>
 
-      {isLoading && <LoadingState rows={6} />}
+      {isLoading && <Skeleton active paragraph={{ rows: 6 }} />}
       {isError && (
         <ErrorState
           message="Could not load parkings"
@@ -47,7 +61,7 @@ const ParkingOverviewPage: React.FC = () => {
         />
       )}
       {!isLoading && !isError && parkings.length === 0 && (
-        <EmptyState description="No parkings match your search" />
+        <Empty description="No parkings match your search" />
       )}
 
       {!isLoading && !isError && parkings.length > 0 && (
@@ -67,3 +81,4 @@ const ParkingOverviewPage: React.FC = () => {
 };
 
 export default ParkingOverviewPage;
+

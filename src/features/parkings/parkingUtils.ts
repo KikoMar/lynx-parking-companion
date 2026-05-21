@@ -38,13 +38,3 @@ export const pinFavoriteFirst = (
   return [favorite, ...parkings.filter((p) => p.id !== favoriteId)];
 };
 
-export const preparedParkingList = (
-  parkings: ParkingStructure[],
-  search: string,
-  sort: ParkingSortOption,
-  favoriteId: string | null
-): ParkingStructure[] => {
-  const filtered = filterParkingsByName(parkings, search);
-  const sorted = sortParkings(filtered, sort);
-  return pinFavoriteFirst(sorted, favoriteId);
-};

@@ -11,7 +11,6 @@ import { createTestQueryClient } from '../test/testUtils';
 jest.mock('../features/parkings/parkingApi', () => {
   const utils = require('../test/testUtils');
   return {
-    PARKINGS_QUERY_KEY: ['parkings'],
     fetchParkings: jest.fn(),
     useParkingsQuery: () => ({
       data: utils.mockParkings,

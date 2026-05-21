@@ -11,7 +11,8 @@ const safeParseLocation = (
   if (!raw) return {};
   try {
     return JSON.parse(raw) as RawGhentLocationAndDimension;
-  } catch {
+  } catch (e) {
+    console.error('Failed to parse locationanddimension', e);
     return {};
   }
 };

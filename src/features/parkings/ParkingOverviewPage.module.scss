@@ -6,3 +6,15 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+
+.filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+
+  :global(.ant-input-affix-wrapper),
+  :global(.ant-select) {
+    min-width: 220px;
+  }
+}
