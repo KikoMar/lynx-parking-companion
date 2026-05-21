@@ -6,7 +6,7 @@ export const filterParkingsByName = (
 ): ParkingStructure[] => {
   const term = search.trim().toLowerCase();
   if (!term) return parkings;
-  return parkings.filter((p) => p.name.toLowerCase().includes(term));
+  return parkings.filter((parking) => parking.name.toLowerCase().includes(term));
 };
 
 export const sortParkings = (
@@ -33,8 +33,8 @@ export const pinFavoriteFirst = (
   favoriteId: string | null
 ): ParkingStructure[] => {
   if (!favoriteId) return parkings;
-  const favorite = parkings.find((p) => p.id === favoriteId);
+  const favorite = parkings.find((parking) => parking.id === favoriteId);
   if (!favorite) return parkings;
-  return [favorite, ...parkings.filter((p) => p.id !== favoriteId)];
+  return [favorite, ...parkings.filter((parking) => parking.id !== favoriteId)];
 };
 

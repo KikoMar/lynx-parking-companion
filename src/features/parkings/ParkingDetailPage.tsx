@@ -23,7 +23,7 @@ const ParkingDetailPage: React.FC = () => {
     );
   }
 
-  const parking = data?.find((p) => p.id === decodedId);
+  const parking = data?.find((item) => item.id === decodedId);
   if (!parking) {
     return (
       <>

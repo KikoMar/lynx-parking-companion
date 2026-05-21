@@ -66,11 +66,11 @@ const ParkingOverviewPage: React.FC = () => {
 
       {!isLoading && !isError && parkings.length > 0 && (
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-          {parkings.map((p) => (
+          {parkings.map((parking) => (
             <ParkingCard
-              key={p.id}
-              parking={p}
-              isFavorite={favoriteId === p.id}
+              key={parking.id}
+              parking={parking}
+              isFavorite={favoriteId === parking.id}
               onToggleFavorite={toggleFavorite}
             />
           ))}
