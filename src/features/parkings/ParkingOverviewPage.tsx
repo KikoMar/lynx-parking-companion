@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Space, Typography } from 'antd';
 import { useParkingsQuery } from './parkingApi';
+import styles from './ParkingOverviewPage.module.scss';
 import { useParkingStore } from './parkingStore';
 import { ParkingSortOption } from './parkingTypes';
 import { preparedParkingList } from './parkingUtils';
@@ -25,7 +26,7 @@ const ParkingOverviewPage: React.FC = () => {
 
   return (
     <div data-testid="parking-overview">
-      <div className="page-header">
+      <div className={styles.pageHeader}>
         <Typography.Title level={3} style={{ margin: 0 }}>
           Ghent parkings
         </Typography.Title>

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button, Card, Space, Tag, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import styles from './ParkingDetailPage.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useParkingsQuery } from './parkingApi';
 import LoadingState from '../../components/LoadingState/LoadingState';
 import ErrorState from '../../components/ErrorState/ErrorState';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import { ParkingStructure } from './parkingTypes';
+import { AppRoute } from '../../constants';
 
 interface DetailItemProps {
   label: string;
@@ -15,8 +17,8 @@ interface DetailItemProps {
 
 const DetailItem: React.FC<DetailItemProps> = ({ label, value }) => (
   <div>
-    <div className="parking-detail__item-label">{label}</div>
-    <div className="parking-detail__item-value">{value || '—'}</div>
+    <div className={styles.parkingDetailItemLabel}>{label}</div>
+    <div className={styles.parkingDetailItemValue}>{value || '—'}</div>
   </div>
 );
 
@@ -47,7 +49,7 @@ const ParkingDetailPage: React.FC = () => {
       <>
         <Button
           icon={<ArrowLeftOutlined />}
-          onClick={() => navigate('/parkings')}
+          onClick={() => navigate(AppRoute.parkings)}
           style={{ marginBottom: 16 }}
         >
           Back to parkings
@@ -63,13 +65,13 @@ const ParkingDetailPage: React.FC = () => {
     <div data-testid="parking-detail">
       <Button
         icon={<ArrowLeftOutlined />}
-        onClick={() => navigate('/parkings')}
+        onClick={() => navigate(AppRoute.parkings)}
         style={{ marginBottom: 16 }}
       >
         Back to parkings
       </Button>
       <Card>
-        <div className="parking-detail__header">
+        <div className={styles.parkingDetailHeader}>
           <Space size="small" wrap>
             <Typography.Title level={3} style={{ margin: 0 }}>
               {parking.name}
@@ -93,7 +95,7 @@ const ParkingDetailPage: React.FC = () => {
           )}
         </div>
 
-        <div className="parking-detail__grid">
+        <div className={styles.parkingDetailGrid}>
           <DetailItem
             label="Available spaces"
             value={
@@ -131,7 +133,7 @@ const ParkingDetailPage: React.FC = () => {
         {mapsUrl && (
           <iframe
             title={`Map of ${parking.name}`}
-            className="parking-detail__map"
+            className={styles.parkingDetailMap}
             src={mapsUrl}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

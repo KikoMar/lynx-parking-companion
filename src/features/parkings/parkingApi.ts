@@ -2,16 +2,19 @@ import axios from 'axios';
 import { useQuery, UseQueryResult } from 'react-query';
 import { ParkingStructure, RawGhentParkingResponse } from './parkingTypes';
 import { mapRawRecordsToParkings } from './parkingMapper';
+import {
+  GHENT_PARKING_API_URL,
+  PARKINGS_QUERY_KEY,
+  PARKING_QUERY_STALE_TIME,
+  PARKING_QUERY_REFETCH_INTERVAL,
+} from '../../constants';
 
-const GHENT_PARKING_URL =
-  'https://data.stad.gent/api/records/1.0/search/?dataset=bezetting-parkeergarages-real-time&q=&rows=50';
+export { PARKINGS_QUERY_KEY };
 
 export const fetchParkings = async (): Promise<ParkingStructure[]> => {
-  const response = await axios.get<RawGhentParkingResponse>(GHENT_PARKING_URL);
+  const response = await axios.get<RawGhentParkingResponse>(GHENT_PARKING_API_URL);
   return mapRawRecordsToParkings(response.data?.records);
 };
-
-export const PARKINGS_QUERY_KEY = ['parkings'] as const;
 
 export const useParkingsQuery = (): UseQueryResult<
   ParkingStructure[],
@@ -21,8 +24,8 @@ export const useParkingsQuery = (): UseQueryResult<
     PARKINGS_QUERY_KEY,
     fetchParkings,
     {
-      staleTime: 60 * 1000,
-      refetchInterval: 60 * 1000,
+      staleTime: PARKING_QUERY_STALE_TIME,
+      refetchInterval: PARKING_QUERY_REFETCH_INTERVAL,
       refetchOnWindowFocus: false,
     }
   );

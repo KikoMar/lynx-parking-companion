@@ -3,11 +3,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ConfigProvider } from 'antd';
 import AppRoutes from './routes';
+import { QUERY_RETRY_COUNT } from '../constants';
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1,
+      retry: QUERY_RETRY_COUNT,
       refetchOnWindowFocus: false,
     },
   },

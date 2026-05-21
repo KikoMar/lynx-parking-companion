@@ -3,6 +3,8 @@ import { Card, Space, Tag, Typography } from 'antd';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { ParkingStructure } from './parkingTypes';
+import styles from './ParkingCard.module.scss';
+import { AppRoute } from '../../constants';
 
 interface ParkingCardProps {
   parking: ParkingStructure;
@@ -11,12 +13,13 @@ interface ParkingCardProps {
 }
 
 const spacesClass = (parking: ParkingStructure): string => {
+  const base = styles.parkingCardSpaces;
   if (parking.totalCapacity > 0) {
     const ratio = parking.availableSpaces / parking.totalCapacity;
-    if (ratio === 0) return 'parking-card__spaces parking-card__spaces--full';
-    if (ratio < 0.1) return 'parking-card__spaces parking-card__spaces--low';
+    if (ratio === 0) return `${base} ${styles.parkingCardSpacesFull}`;
+    if (ratio < 0.1) return `${base} ${styles.parkingCardSpacesLow}`;
   }
-  return 'parking-card__spaces';
+  return base;
 };
 
 const ParkingCard: React.FC<ParkingCardProps> = ({
@@ -27,7 +30,7 @@ const ParkingCard: React.FC<ParkingCardProps> = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/parkings/${encodeURIComponent(parking.id)}`);
+    navigate(`${AppRoute.parkings}/${encodeURIComponent(parking.id)}`);
   };
 
   const handleFavorite = (e: React.MouseEvent) => {
@@ -37,17 +40,17 @@ const ParkingCard: React.FC<ParkingCardProps> = ({
 
   return (
     <Card
-      className="parking-card"
+      className={styles.parkingCard}
       onClick={handleClick}
       data-testid={`parking-card-${parking.id}`}
       hoverable
     >
-      <div className="parking-card__row">
+      <div className={styles.parkingCardRow}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="parking-card__title-wrap">
+          <div className={styles.parkingCardTitleWrap}>
             <button
               type="button"
-              className="parking-card__favorite"
+              className={styles.parkingCardFavorite}
               onClick={handleFavorite}
               aria-label={
                 isFavorite
@@ -72,7 +75,7 @@ const ParkingCard: React.FC<ParkingCardProps> = ({
               )}
             </Space>
           </div>
-          <div className="parking-card__address">{parking.address}</div>
+          <div className={styles.parkingCardAddress}>{parking.address}</div>
         </div>
         <div>
           <div
@@ -81,7 +84,7 @@ const ParkingCard: React.FC<ParkingCardProps> = ({
           >
             {parking.availableSpaces}
           </div>
-          <div className="parking-card__spaces-label">
+          <div className={styles.parkingCardSpacesLabel}>
             of {parking.totalCapacity} free
           </div>
         </div>

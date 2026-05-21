@@ -4,6 +4,7 @@ import {
   RawGhentLocationAndDimension,
 } from './parkingTypes';
 
+
 const safeParseLocation = (
   raw: string | undefined
 ): RawGhentLocationAndDimension => {

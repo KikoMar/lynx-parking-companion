@@ -1,14 +1,16 @@
 import React from 'react';
 import { Layout, Menu, Typography } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import styles from './AppLayout.module.scss';
+import { AppRoute } from '../../constants';
 
 const { Header, Content } = Layout;
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
-  const selectedKey = location.pathname.startsWith('/profile')
-    ? '/profile'
-    : '/parkings';
+  const selectedKey = location.pathname.startsWith(AppRoute.profile)
+    ? AppRoute.profile
+    : AppRoute.parkings;
 
   return (
     <Layout style={{ minHeight: '100vh', background: '#f5f7fa' }}>
@@ -33,18 +35,18 @@ const AppLayout: React.FC = () => {
           style={{ flex: 1, background: 'transparent' }}
           items={[
             {
-              key: '/parkings',
-              label: <Link to="/parkings">Parkings</Link>,
+              key: AppRoute.parkings,
+              label: <Link to={AppRoute.parkings}>Parkings</Link>,
             },
             {
-              key: '/profile',
-              label: <Link to="/profile">Profile</Link>,
+              key: AppRoute.profile,
+              label: <Link to={AppRoute.profile}>Profile</Link>,
             },
           ]}
         />
       </Header>
       <Content>
-        <div className="page-container">
+        <div className={styles.pageContainer}>
           <Outlet />
         </div>
       </Content>

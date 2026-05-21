@@ -1,0 +1,62 @@
+.parkingCard {
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+
+  &Row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  &TitleWrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  &Address {
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  &Spaces {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+    color: #1677ff;
+    text-align: right;
+
+    &Low {
+      color: #fa8c16;
+    }
+
+    &Full {
+      color: #cf1322;
+    }
+  }
+
+  &SpacesLabel {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.55);
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  &Favorite {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 20px;
+    color: #faad14;
+    padding: 0;
+    line-height: 1;
+  }
+}

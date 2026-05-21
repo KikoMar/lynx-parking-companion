@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, Select } from 'antd';
 import { ParkingSortOption } from './parkingTypes';
+import styles from './ParkingFilters.module.scss';
 
 interface ParkingFiltersProps {
   search: string;
@@ -22,7 +23,7 @@ const ParkingFilters: React.FC<ParkingFiltersProps> = ({
   sort,
   onSortChange,
 }) => (
-  <div className="filters">
+  <div className={styles.filters}>
     <Input.Search
       allowClear
       placeholder="Search by parking name"

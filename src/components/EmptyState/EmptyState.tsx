@@ -1,5 +1,6 @@
 import React from 'react';
 import { Empty } from 'antd';
+import styles from './EmptyState.module.scss';
 
 interface EmptyStateProps {
   description?: string;
@@ -8,7 +9,7 @@ interface EmptyStateProps {
 const EmptyState: React.FC<EmptyStateProps> = ({
   description = 'No results',
 }) => (
-  <div className="state-wrap" data-testid="empty-state">
+  <div className={styles.stateWrap} data-testid="empty-state">
     <Empty description={description} />
   </div>
 );

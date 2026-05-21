@@ -5,6 +5,7 @@ import ProfileForm from './ProfileForm';
 import { useProfileStore } from './profileStore';
 import { useParkingStore } from '../parkings/parkingStore';
 import { UserProfile } from './profileTypes';
+import { AppRoute } from '../../constants';
 
 const ProfilePage: React.FC = () => {
   const profile = useProfileStore((s) => s.profile);
@@ -22,7 +23,7 @@ const ProfilePage: React.FC = () => {
     clearProfile();
     clearFavorite();
     message.success('Profile deleted');
-    navigate('/setup', { replace: true });
+    navigate(AppRoute.setup, { replace: true });
   };
 
   return (

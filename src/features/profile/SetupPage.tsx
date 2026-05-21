@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ProfileForm from './ProfileForm';
 import { useProfileStore } from './profileStore';
 import { UserProfile } from './profileTypes';
+import { AppRoute } from '../../constants';
 
 const SetupPage: React.FC = () => {
   const setProfile = useProfileStore((s) => s.setProfile);
@@ -12,7 +13,7 @@ const SetupPage: React.FC = () => {
   const handleSubmit = (values: UserProfile) => {
     setProfile(values);
     message.success('Profile saved');
-    navigate('/parkings', { replace: true });
+    navigate(AppRoute.parkings, { replace: true });
   };
 
   return (

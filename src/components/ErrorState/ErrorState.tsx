@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert, Button, Space } from 'antd';
+import styles from './ErrorState.module.scss';
 
 interface ErrorStateProps {
   message?: string;
@@ -12,7 +13,7 @@ const ErrorState: React.FC<ErrorStateProps> = ({
   description = 'We could not load the data. Please try again.',
   onRetry,
 }) => (
-  <div className="state-wrap" data-testid="error-state">
+  <div className={styles.stateWrap} data-testid="error-state">
     <Space direction="vertical" size="middle" style={{ width: '100%' }}>
       <Alert
         type="error"
